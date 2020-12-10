@@ -112,20 +112,35 @@ class _HomeDosenState extends State<HomeDosen> {
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 20, 30, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: <Widget>[
-                      (loginSebagai == 'dosen')
-                          ? Text("NIP      : " + username,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16))
-                          : Text("NRP      : " + username,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
-                      Text("Nama  : " + nama,
-                          style: TextStyle(color: Colors.white, fontSize: 16)),
-                      // Text("Login Sebagai  : " + loginSebagai,
-                      //     style: TextStyle(color: Colors.white, fontSize: 16)),
+                      Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
+                            fit: BoxFit.contain
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          (loginSebagai == 'dosen')
+                              ? Text("NIP      : " + username,
+                                  style:
+                                      TextStyle(color: Colors.white, fontSize: 16))
+                              : Text("NRP      : " + username,
+                                  style:
+                                      TextStyle(color: Colors.white, fontSize: 16)),
+                          Text("Nama  : " + nama,
+                              style: TextStyle(color: Colors.white, fontSize: 16)),
+                          // Text("Login Sebagai  : " + loginSebagai,
+                          //     style: TextStyle(color: Colors.white, fontSize: 16)),
+                        ],
+                      ),
                     ],
                   ),
                 ),

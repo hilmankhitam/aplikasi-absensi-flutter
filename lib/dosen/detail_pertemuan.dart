@@ -276,41 +276,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   sliver: SliverAppBar(
                     title: Text("Detail Pertemuan"),
                     actions: <Widget>[
-                      (widget.loginSebagai == 'mahasiswa')
-                          ? Padding(
-                              padding: EdgeInsets.only(right: 20),
-                              child: InkWell(
-                                  onTap: () async {
-                                    String qrCodePhoto =
-                                        await scanner.scanPhoto();
-                                    if (widget.idPertemuan == qrCodePhoto) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => TandaTangan(
-                                                  namaMahasiswa:
-                                                      widget.namaMahasiswa,
-                                                  idPertemuan:
-                                                      widget.idPertemuan,
-                                                  idMahasiswa:
-                                                      widget.idMahasiswa,
-                                                  loginSebagai: widget
-                                                      .loginSebagai))).then(
-                                          (value) => _refresh());
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "QR Code Tidak Sama",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.CENTER,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    }
-                                  },
-                                  child: Icon(Icons.qr_code_scanner_outlined)))
-                          : SizedBox(),
+                      
                       Padding(
                           padding: EdgeInsets.only(right: 20),
                           child: InkWell(
@@ -338,6 +304,10 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                             data: widget.idPertemuan,
                                             version: QrVersions.auto,
                                             size: 240,
+                                            embeddedImage: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
+                                            embeddedImageStyle: QrEmbeddedImageStyle(
+                                              size: Size(80,80)
+                                            ),
                                           ),
                                         ),
                                         Row(

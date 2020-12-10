@@ -123,9 +123,10 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
     switch (_loginStatus) {
       case LoginStatus.notSignIn:
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
             appBar: AppBar(
-              title: Text("Login"),
+              title: Text("Login Mahasiswa"),
             ),
             body: Padding(
                 padding: EdgeInsets.all(10),
@@ -133,6 +134,16 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
                   key: _key,
                   child: ListView(
                     children: <Widget>[
+                      Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
+                            fit: BoxFit.contain
+                          ),
+                        ),
+                      ),
                       Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(10),
