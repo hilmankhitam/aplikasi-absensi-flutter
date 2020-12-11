@@ -119,7 +119,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
   }
 
   checkAbsen() async {
-    
     final response = await http.post(
         "https://aplikasiabsensistmik.000webhostapp.com/mahasiswa/checkabsensi.php",
         body: {
@@ -258,9 +257,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Detail Kelas"),
-      // ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         key: refreshAllKey,
@@ -276,7 +272,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   sliver: SliverAppBar(
                     title: Text("Detail Pertemuan"),
                     actions: <Widget>[
-                      
                       Padding(
                           padding: EdgeInsets.only(right: 20),
                           child: InkWell(
@@ -304,10 +299,11 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                             data: widget.idPertemuan,
                                             version: QrVersions.auto,
                                             size: 240,
-                                            embeddedImage: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
-                                            embeddedImageStyle: QrEmbeddedImageStyle(
-                                              size: Size(80,80)
-                                            ),
+                                            embeddedImage: AssetImage(
+                                                "LOGOSTMIKINDONESIABANJARMASIN.png"),
+                                            embeddedImageStyle:
+                                                QrEmbeddedImageStyle(
+                                                    size: Size(80, 80)),
                                           ),
                                         ),
                                         Row(
@@ -480,119 +476,130 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                 RefreshIndicator(
                   onRefresh: _refresh,
                   key: refreshAbsensiKey,
-                  child: (loadingAbsen)
-                      ? Center(child: CircularProgressIndicator())
-                      : absensi.isEmpty
-                          ? Center(
-                              child: Text("Belum Ada Mahasiswa yang Absen"),
-                            )
-                          : Column(
-                              children: [
-                                Row(
+                  child: ListView(
+                    children: [
+                      (loadingAbsen)
+                          ? Center(child: CircularProgressIndicator())
+                          : absensi.isEmpty
+                              ? Center(
+                                  child: Text("Belum Ada Mahasiswa yang Absen"),
+                                )
+                              : Column(
                                   children: [
-                                    Container(
-                                        margin:
-                                            EdgeInsets.only(top: 10, left: 10),
-                                        child: Text(
-                                            "Jumlah yang sudah absen (${absensi.length})")),
+                                    Row(
+                                      children: [
+                                        Container(
+                                            margin: EdgeInsets.only(
+                                                top: 10, left: 10),
+                                            child: Text(
+                                                "Jumlah yang sudah absen (${absensi.length})")),
+                                      ],
+                                    ),
+                                    ListView.builder(
+                                      itemCount: absensi.length,
+                                      physics: ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          child: Container(
+                                            height: 75,
+                                            child: ListTile(
+                                              leading: Text("${index + 1}"),
+                                              title: Text(
+                                                  absensi[index]['username']),
+                                              subtitle: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "Nama : " +
+                                                        absensi[index]['nama'],
+                                                    style:
+                                                        TextStyle(fontSize: 13),
+                                                  ),
+                                                  Container(
+                                                    height: 40,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: Colors.white),
+                                                    child: Container(
+                                                      height: 40,
+                                                      width: 60,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                  "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                                                                      absensi[index]
+                                                                          [
+                                                                          'tanda_tangan']),
+                                                              fit: BoxFit
+                                                                  .contain)),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
-                                ListView.builder(
-                                  itemCount: absensi.length,
-                                  physics: ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return Card(
-                                      child: Container(
-                                        height: 75,
-                                        child: ListTile(
-                                          leading: Text("${index + 1}"),
-                                          title:
-                                              Text(absensi[index]['username']),
-                                          subtitle: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Nama : " +
-                                                    absensi[index]['nama'],
-                                                style: TextStyle(fontSize: 13),
-                                              ),
-                                              Container(
-                                                height: 40,
-                                                width: 60,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    color: Colors.white),
-                                                child: Container(
-                                                  height: 40,
-                                                  width: 60,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              "https://aplikasiabsensistmik.000webhostapp.com/image/" +
-                                                                  absensi[index]
-                                                                      [
-                                                                      'tanda_tangan']),
-                                                          fit: BoxFit.contain)),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                    ],
+                  ),
                 ),
                 RefreshIndicator(
                   onRefresh: _refresh,
                   key: refreshMhsTerdaftarKey,
-                  child: (loadingMhsTerdaftar)
-                      ? Center(child: CircularProgressIndicator())
-                      : mhsTerdaftar.isEmpty
-                          ? Center(
-                              child: Text("Tidak Ada Mahasiswa Terdaftar"),
-                            )
-                          : Column(
-                              children: [
-                                Row(
+                  child: ListView(
+                    children: [
+                      (loadingMhsTerdaftar)
+                          ? Center(child: CircularProgressIndicator())
+                          : mhsTerdaftar.isEmpty
+                              ? Center(
+                                  child: Text("Tidak Ada Mahasiswa Terdaftar"),
+                                )
+                              : Column(
                                   children: [
-                                    Container(
-                                        margin:
-                                            EdgeInsets.only(top: 10, left: 10),
-                                        child: Text(
-                                            "Jumlah Mahasiswa (${mhsTerdaftar.length})")),
+                                    Row(
+                                      children: [
+                                        Container(
+                                            margin: EdgeInsets.only(
+                                                top: 10, left: 10),
+                                            child: Text(
+                                                "Jumlah Mahasiswa (${mhsTerdaftar.length})")),
+                                      ],
+                                    ),
+                                    ListView.builder(
+                                      itemCount: mhsTerdaftar.length,
+                                      physics: ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          child: Container(
+                                            height: 80,
+                                            child: ListTile(
+                                              leading: Text("${index + 1}"),
+                                              title: Text(mhsTerdaftar[index]
+                                                  ['username']),
+                                              subtitle: Text("Nama : " +
+                                                  mhsTerdaftar[index]['nama']),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
-                                ListView.builder(
-                                  itemCount: mhsTerdaftar.length,
-                                  physics: ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return Card(
-                                      child: Container(
-                                        height: 80,
-                                        child: ListTile(
-                                          leading: Text("${index + 1}"),
-                                          title: Text(
-                                              mhsTerdaftar[index]['username']),
-                                          subtitle: Text("Nama : " +
-                                              mhsTerdaftar[index]['nama']),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -90,110 +90,115 @@ class _HomeDosenState extends State<HomeDosen> {
               ))
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: 140,
-                  //margin: EdgeInsets.only(left: 46),
-                  decoration: BoxDecoration(
-                      color: Color(0xFF333366),
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            offset: Offset(0.0, 10.0)),
-                      ]),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 20, 30, 20),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
-                            fit: BoxFit.contain
+      body: ListView(children: <Widget>[
+        Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    height: 140,
+                    //margin: EdgeInsets.only(left: 46),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF333366),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              offset: Offset(0.0, 10.0)),
+                        ]),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 20, 30, 20),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "LOGOSTMIKINDONESIABANJARMASIN.png"),
+                                fit: BoxFit.contain),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10,),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          (loginSebagai == 'dosen')
-                              ? Text("NIP      : " + username,
-                                  style:
-                                      TextStyle(color: Colors.white, fontSize: 16))
-                              : Text("NRP      : " + username,
-                                  style:
-                                      TextStyle(color: Colors.white, fontSize: 16)),
-                          Text("Nama  : " + nama,
-                              style: TextStyle(color: Colors.white, fontSize: 16)),
-                          // Text("Login Sebagai  : " + loginSebagai,
-                          //     style: TextStyle(color: Colors.white, fontSize: 16)),
-                        ],
-                      ),
-                    ],
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            (loginSebagai == 'dosen')
+                                ? Text("NIP      : " + username,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16))
+                                : Text("NRP      : " + username,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16)),
+                            Text("Nama  : " + nama,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16)),
+                            // Text("Login Sebagai  : " + loginSebagai,
+                            //     style: TextStyle(color: Colors.white, fontSize: 16)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Stack(
-            children: <Widget>[
-              (isLoading)
-                  ? Center(child: CircularProgressIndicator())
-                  : kelasList.isEmpty
-                      ? Center(child: Text("Tidak ada Kelas"))
-                      : ListView.builder(
-                          itemCount: kelasList == null ? 0 : kelasList.length,
-                          physics: ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              child: InkWell(
-                                onTap: () async {
-                                  namaMatkulKelas =
-                                      "${kelasList[index]['nama_matkul']} Kelas ${kelasList[index]['kelas_abjad']}";
-                                  await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailKelas(
-                                                idKelas: kelasList[index]
-                                                    ['id_kelas'],
-                                                namaMatkulKelas:
-                                                    namaMatkulKelas,
-                                                sks: kelasList[index]['sks'],
-                                                loginSebagai: loginSebagai,
-                                                idMahasiswa: id,
-                                                namaMahasiswa: nama,
-                                              )));
-                                },
-                                child: Container(
-                                  height: 80,
-                                  child: ListTile(
-                                    title:
-                                        Text(kelasList[index]['nama_matkul']),
-                                    subtitle: Text("Kelas " +
-                                        kelasList[index]['kelas_abjad']),
+            Stack(
+              children: <Widget>[
+                (isLoading)
+                    ? Center(child: CircularProgressIndicator())
+                    : kelasList.isEmpty
+                        ? Center(child: Text("Tidak ada Kelas"))
+                        : ListView.builder(
+                            itemCount: kelasList == null ? 0 : kelasList.length,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: InkWell(
+                                  onTap: () async {
+                                    namaMatkulKelas =
+                                        "${kelasList[index]['nama_matkul']} Kelas ${kelasList[index]['kelas_abjad']}";
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailKelas(
+                                                  idKelas: kelasList[index]
+                                                      ['id_kelas'],
+                                                  namaMatkulKelas:
+                                                      namaMatkulKelas,
+                                                  sks: kelasList[index]['sks'],
+                                                  loginSebagai: loginSebagai,
+                                                  idMahasiswa: id,
+                                                  namaMahasiswa: nama,
+                                                )));
+                                  },
+                                  child: Container(
+                                    height: 80,
+                                    child: ListTile(
+                                      title:
+                                          Text(kelasList[index]['nama_matkul']),
+                                      subtitle: Text("Kelas " +
+                                          kelasList[index]['kelas_abjad']),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-            ],
-          ),
-        ],
-      ),
+                              );
+                            },
+                          ),
+              ],
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }
