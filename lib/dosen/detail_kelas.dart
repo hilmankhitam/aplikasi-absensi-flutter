@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aplikasi_absensi/dosen/detail_pertemuan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
@@ -53,7 +54,7 @@ class _DetailKelasState extends State<DetailKelas> {
         onRefresh: getPertemuanKelas,
         key: refresh,
               child: (isLoading)
-            ? Center(child: CircularProgressIndicator())
+            ? Center(child: SpinKitFadingCircle(color: Color(0xFF333366),) )
             : pertemuanKelas.isEmpty
                 ? Center(child: Text("Belum ada Pertemuan"))
                 : ListView.builder(

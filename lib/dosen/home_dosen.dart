@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aplikasi_absensi/dosen/detail_kelas.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -94,7 +95,7 @@ class _HomeDosenState extends State<HomeDosen> {
         Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -116,8 +117,8 @@ class _HomeDosenState extends State<HomeDosen> {
                     child: Row(
                       children: <Widget>[
                         Container(
-                          height: 80,
-                          width: 80,
+                          height: 75,
+                          width: 75,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
@@ -154,7 +155,10 @@ class _HomeDosenState extends State<HomeDosen> {
             Stack(
               children: <Widget>[
                 (isLoading)
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: SpinKitFadingCircle(
+                        color: Color(0xFF333366),
+                      ))
                     : kelasList.isEmpty
                         ? Center(child: Text("Tidak ada Kelas"))
                         : ListView.builder(

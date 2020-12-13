@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:aplikasi_absensi/tanda_tangan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
@@ -285,7 +286,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                   elevation: 0,
                                   backgroundColor: Colors.transparent,
                                   child: Container(
-                                    height: 350,
+                                    height: 400,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         shape: BoxShape.rectangle,
@@ -298,12 +299,12 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                           child: QrImage(
                                             data: widget.idPertemuan,
                                             version: QrVersions.auto,
-                                            size: 240,
+                                            size: 250,
                                             embeddedImage: AssetImage(
                                                 "LOGOSTMIKINDONESIABANJARMASIN.png"),
                                             embeddedImageStyle:
                                                 QrEmbeddedImageStyle(
-                                                    size: Size(80, 80)),
+                                                    size: Size(45, 45)),
                                           ),
                                         ),
                                         Row(
@@ -368,7 +369,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                           Container(
                             margin: EdgeInsets.fromLTRB(35, 85, 30, 0),
                             child: loadingInfoPertemuan
-                                ? Center(child: CircularProgressIndicator())
+                                ? Center(child: SpinKitFadingCircle(color: Colors.white,))
                                 : Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -479,7 +480,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   child: ListView(
                     children: [
                       (loadingAbsen)
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(child: SpinKitFadingCircle(color: Color(0xFF333366),))
                           : absensi.isEmpty
                               ? Center(
                                   child: Text("Belum Ada Mahasiswa yang Absen"),
@@ -561,7 +562,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   child: ListView(
                     children: [
                       (loadingMhsTerdaftar)
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(child: SpinKitFadingCircle(color: Color(0xFF333366),))
                           : mhsTerdaftar.isEmpty
                               ? Center(
                                   child: Text("Tidak Ada Mahasiswa Terdaftar"),
