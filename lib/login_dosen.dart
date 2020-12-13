@@ -78,7 +78,8 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
     }
   }
 
-  savePref(int value, String username, String nama, String id, String loginSebagai) async {
+  savePref(int value, String username, String nama, String id,
+      String loginSebagai) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("value", value);
@@ -121,6 +122,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
     switch (_loginStatus) {
       case LoginStatus.notSignIn:
         return MaterialApp(
+          theme: ThemeData(primaryColor: Color(0xFF333366)),
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             appBar: AppBar(
@@ -137,9 +139,9 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
                         width: 150,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
-                            fit: BoxFit.contain
-                          ),
+                              image: AssetImage(
+                                  "LOGOSTMIKINDONESIABANJARMASIN.png"),
+                              fit: BoxFit.contain),
                         ),
                       ),
                       Container(
@@ -148,7 +150,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
                           child: Text(
                             'Login Dosen',
                             style: TextStyle(
-                                color: Colors.blue,
+                                color: Color(0xFF333366),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 30),
                           )),
@@ -190,7 +192,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
                           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: RaisedButton(
                             textColor: Colors.white,
-                            color: Colors.blue,
+                            color: Color(0xFF333366),
                             child: Text('Login'),
                             onPressed: () {
                               check();
@@ -202,14 +204,15 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
                             onTap: () async {
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => LoginMahasiswaPage()),
+                                      builder: (context) =>
+                                          LoginMahasiswaPage()),
                                   (Route<dynamic> route) => false);
                             },
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(10, 25, 10, 0),
                               child: Text("Login Mahasiswa",
                                   style: TextStyle(
-                                      color: Colors.blueAccent,
+                                      color: Color(0xFF333366),
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600)),
                             ),

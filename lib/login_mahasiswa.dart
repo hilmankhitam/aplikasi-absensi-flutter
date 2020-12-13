@@ -39,7 +39,6 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
 
-
   loginMahasiswa() async {
     final response = await http.post(
         "https://aplikasiabsensistmik.000webhostapp.com/mahasiswa/loginmahasiswa.php",
@@ -80,7 +79,8 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
     }
   }
 
-  savePref(int value, String username, String nama, String id, String loginSebagai) async {
+  savePref(int value, String username, String nama, String id,
+      String loginSebagai) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("value", value);
@@ -123,6 +123,7 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
     switch (_loginStatus) {
       case LoginStatus.notSignIn:
         return MaterialApp(
+          theme: ThemeData(primaryColor: Color(0xFF333366)),
           debugShowCheckedModeBanner: false,
           home: Scaffold(
             appBar: AppBar(
@@ -139,9 +140,9 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
                         width: 150,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("LOGOSTMIKINDONESIABANJARMASIN.png"),
-                            fit: BoxFit.contain
-                          ),
+                              image: AssetImage(
+                                  "LOGOSTMIKINDONESIABANJARMASIN.png"),
+                              fit: BoxFit.contain),
                         ),
                       ),
                       Container(
@@ -150,7 +151,7 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
                           child: Text(
                             'Login Mahasiswa',
                             style: TextStyle(
-                                color: Colors.blue,
+                                color: Color(0xFF333366),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 30),
                           )),
@@ -192,14 +193,14 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
                           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: RaisedButton(
                             textColor: Colors.white,
-                            color: Colors.blue,
+                            color: Color(0xFF333366),
                             child: Text('Login'),
                             onPressed: () {
                               check();
                             },
                           )),
                       GestureDetector(
-                        onTap: ()async{
+                        onTap: () async {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => LoginDosenPage()),
@@ -207,7 +208,11 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
                         },
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(10, 25, 10, 0),
-                          child: Text("Login Dosen", style: TextStyle(color: Colors.blueAccent, fontSize: 16, fontWeight: FontWeight.w600)),
+                          child: Text("Login Dosen",
+                              style: TextStyle(
+                                  color: Color(0xFF333366),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600)),
                         ),
                       )
                     ],

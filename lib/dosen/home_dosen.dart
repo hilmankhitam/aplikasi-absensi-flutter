@@ -95,7 +95,7 @@ class _HomeDosenState extends State<HomeDosen> {
         Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              margin: EdgeInsets.symmetric(vertical: 16, horizontal: 18),
               child: Stack(
                 children: <Widget>[
                   Container(

@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Login Absensi",
       home: SplashScreen(),
+      theme: ThemeData(
+        primaryColor: Color(0xFF333366)
+      ),
     );
   }
 }

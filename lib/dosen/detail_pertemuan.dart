@@ -362,8 +362,9 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
                                       color: Colors.black12,
-                                      blurRadius: 10,
-                                      offset: Offset(0.0, 10.0)),
+                                      blurRadius: 7,
+                                      spreadRadius: 5, 
+                                      offset: Offset(0.0, 5.0)),
                                 ]),
                           ),
                           Container(
