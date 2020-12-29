@@ -52,6 +52,7 @@ class _TandaTanganState extends State<TandaTangan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF333366),
       appBar: AppBar(
         title: Text("Tanda Tangan"),
       ),
@@ -65,7 +66,7 @@ class _TandaTanganState extends State<TandaTangan> {
           ),
           //OK AND CLEAR BUTTONS
           Container(
-            decoration: const BoxDecoration(color: Colors.black),
+            decoration: const BoxDecoration(color: Color(0xFF2D2D6C)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
@@ -74,8 +75,8 @@ class _TandaTanganState extends State<TandaTangan> {
                 AbsorbPointer(
                   absorbing: loading,
                                   child: IconButton(
-                    icon: (loading) ? CircularProgressIndicator() : Icon(Icons.check),
-                    color: Colors.blue,
+                    icon: (loading) ? CircularProgressIndicator(backgroundColor: Colors.white,) : Icon(Icons.check),
+                    color: Colors.white,
                     onPressed: () async {
                       if (_controller.isNotEmpty) {
                         setState(() {
@@ -134,7 +135,7 @@ class _TandaTanganState extends State<TandaTangan> {
                 //CLEAR CANVAS
                 IconButton(
                   icon: const Icon(Icons.clear),
-                  color: Colors.blue,
+                  color: Colors.white,
                   onPressed: () {
                     setState(() => _controller.clear());
                   },

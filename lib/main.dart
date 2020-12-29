@@ -30,7 +30,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 3), ()=> Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => LoginDosenPage())) );

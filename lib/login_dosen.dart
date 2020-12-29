@@ -27,11 +27,11 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
     });
   }
 
-  check() {
+  check() async {
     final form = _key.currentState;
     if (form.validate()) {
       form.save();
-      loginDosen();
+      await loginDosen();
     }
   }
 
@@ -194,8 +194,8 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
                             textColor: Colors.white,
                             color: Color(0xFF333366),
                             child: Text('Login'),
-                            onPressed: () {
-                              check();
+                            onPressed: () async {
+                              await check();
                             },
                           )),
                       Row(

@@ -74,7 +74,7 @@ class _DetailKelasState extends State<DetailKelas> {
                             leading: Text("${index + 1}"),
                             title: Text(pertemuanKelas[index]['nama_pertemuan']),
                             subtitle: Text(
-                                "Ruang : ${pertemuanKelas[index]['ruangan']}\nPukul : ${pertemuanKelas[index]['jam']} | Status : ${pertemuanKelas[index]['status']}"),
+                                "Ruang : ${pertemuanKelas[index]['ruangan']}\nPukul : ${pertemuanKelas[index]['jam']}\nStatus : ${pertemuanKelas[index]['status']}"),
                             enabled: true,
                             isThreeLine: true,
                             onTap: () {

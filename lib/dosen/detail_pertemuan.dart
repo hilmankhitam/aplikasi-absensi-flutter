@@ -285,7 +285,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                   elevation: 0,
                                   backgroundColor: Colors.transparent,
                                   child: Container(
-                                    height: 400,
+                                    height: 360,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         shape: BoxShape.rectangle,
@@ -306,6 +306,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                     size: Size(45, 45)),
                                           ),
                                         ),
+                                        SizedBox(height: 30,),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
@@ -355,7 +356,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                             height: 260,
                             margin: EdgeInsets.fromLTRB(20, 75, 20, 0),
                             decoration: BoxDecoration(
-                                color: Color(0xFF333366),
+                                color: Color(0xFF2D2D6C),
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(8),
                                 boxShadow: <BoxShadow>[
@@ -474,6 +475,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
             },
             body: TabBarView(
               children: [
+                // Mahasiswa yang absen
                 RefreshIndicator(
                   onRefresh: _refresh,
                   key: refreshAbsensiKey,
@@ -556,6 +558,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                     ],
                   ),
                 ),
+                // Mahasiswa yang terdaftar
                 RefreshIndicator(
                   onRefresh: _refresh,
                   key: refreshMhsTerdaftarKey,

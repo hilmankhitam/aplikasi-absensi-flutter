@@ -27,11 +27,11 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
     });
   }
 
-  check() {
+  check() async {
     final form = _key.currentState;
     if (form.validate()) {
       form.save();
-      loginMahasiswa();
+      await loginMahasiswa();
     }
   }
 
@@ -194,8 +194,8 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
                             textColor: Colors.white,
                             color: Color(0xFF333366),
                             child: Text('Login'),
-                            onPressed: () {
-                              check();
+                            onPressed: () async {
+                              await check();
                             },
                           )),
                       GestureDetector(
