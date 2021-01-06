@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:aplikasi_absensi/tanda_tangan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 // ignore: must_be_immutable
 class DetailPertemuan extends StatefulWidget {
@@ -43,6 +48,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<RefreshIndicatorState> refreshAllKey =
       GlobalKey<RefreshIndicatorState>();
+  final GlobalKey _renderObjectKey = GlobalKey();
   List mhsTerdaftar = List();
   List absensi = List();
   List infoPertemu;
@@ -246,6 +252,20 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     infoPertemuan();
   }
 
+  Future<Uint8List> _shareQrCodeImage() async {
+    try {
+      RenderRepaintBoundary boundary =
+          _renderObjectKey.currentContext.findRenderObject();
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      var pngBytes = byteData.buffer.asUint8List();
+      await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png');
+    } catch (exception) {
+      throw exception;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -295,18 +315,25 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                       children: <Widget>[
                                         Padding(
                                           padding: const EdgeInsets.all(12.0),
-                                          child: QrImage(
-                                            data: widget.idPertemuan,
-                                            version: QrVersions.auto,
-                                            size: 250,
-                                            embeddedImage: AssetImage(
-                                                "LOGOSTMIKINDONESIABANJARMASIN.png"),
-                                            embeddedImageStyle:
-                                                QrEmbeddedImageStyle(
-                                                    size: Size(45, 45)),
+                                          child: RepaintBoundary(
+                                            key: _renderObjectKey,
+                                            child: QrImage(
+                                              data: widget.idPertemuan,
+                                              version: QrVersions.auto,
+                                              size: 250,
+                                              backgroundColor: Color(0xFFFFFFFF),
+                                              foregroundColor: Color(0xFF000000),
+                                              embeddedImage: AssetImage(
+                                                  "LOGOSTMIKINDONESIABANJARMASIN.png"),
+                                              embeddedImageStyle:
+                                                  QrEmbeddedImageStyle(
+                                                      size: Size(40, 40)),
+                                            ),
                                           ),
                                         ),
-                                        SizedBox(height: 30,),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
@@ -321,6 +348,20 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                     color: Colors.white),
                                               ),
                                             ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            RaisedButton(
+                                              color: Color(0xFF333366),
+                                              onPressed: () {
+                                                _shareQrCodeImage();
+                                              },
+                                              child: Text(
+                                                "Share",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ],
@@ -363,14 +404,17 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                   BoxShadow(
                                       color: Colors.black12,
                                       blurRadius: 7,
-                                      spreadRadius: 5, 
+                                      spreadRadius: 5,
                                       offset: Offset(0.0, 5.0)),
                                 ]),
                           ),
                           Container(
                             margin: EdgeInsets.fromLTRB(35, 85, 30, 0),
                             child: loadingInfoPertemuan
-                                ? Center(child: SpinKitFadingCircle(color: Colors.white,))
+                                ? Center(
+                                    child: SpinKitFadingCircle(
+                                    color: Colors.white,
+                                  ))
                                 : Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -482,7 +526,10 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   child: ListView(
                     children: [
                       (loadingAbsen)
-                          ? Center(child: SpinKitFadingCircle(color: Color(0xFF333366),))
+                          ? Center(
+                              child: SpinKitFadingCircle(
+                              color: Color(0xFF333366),
+                            ))
                           : absensi.isEmpty
                               ? Center(
                                   child: Text("Belum Ada Mahasiswa yang Absen"),
@@ -565,7 +612,10 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   child: ListView(
                     children: [
                       (loadingMhsTerdaftar)
-                          ? Center(child: SpinKitFadingCircle(color: Color(0xFF333366),))
+                          ? Center(
+                              child: SpinKitFadingCircle(
+                              color: Color(0xFF333366),
+                            ))
                           : mhsTerdaftar.isEmpty
                               ? Center(
                                   child: Text("Tidak Ada Mahasiswa Terdaftar"),
