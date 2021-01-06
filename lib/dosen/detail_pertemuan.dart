@@ -261,6 +261,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
           await image.toByteData(format: ui.ImageByteFormat.png);
       var pngBytes = byteData.buffer.asUint8List();
       await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png');
+      return pngBytes;
     } catch (exception) {
       throw exception;
     }
