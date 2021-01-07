@@ -136,7 +136,7 @@ class _HomeDosenState extends State<HomeDosen> {
                                 ? Text("NIP      : " + username,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16))
-                                : Text("NRP      : " + username,
+                                : Text("NRP     : " + username,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16)),
                             Text("Nama  : " + nama,

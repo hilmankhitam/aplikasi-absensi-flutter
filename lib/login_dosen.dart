@@ -223,7 +223,6 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
                   ),
                 )),
           ),
-          
         );
         break;
       case LoginStatus.signIn:
