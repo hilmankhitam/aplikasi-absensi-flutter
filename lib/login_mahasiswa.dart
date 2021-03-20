@@ -51,6 +51,7 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
     String namaAPI = data['nama'];
     String id = data['id'];
     String loginSebagai = data['loginsebagai'];
+    String jurusan = data['jurusan'];
     if (value == 1) {
       print(data);
       Fluttertoast.showToast(
@@ -63,7 +64,7 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
           fontSize: 16.0);
       setState(() {
         _loginStatus = LoginStatus.signIn;
-        savePref(value, usernameAPI, namaAPI, id, loginSebagai);
+        savePref(value, usernameAPI, namaAPI, id, loginSebagai, jurusan);
       });
     } else {
       print(data);
@@ -79,7 +80,7 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
   }
 
   savePref(int value, String username, String nama, String id,
-      String loginSebagai) async {
+      String loginSebagai, String jurusan) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("value", value);
@@ -87,6 +88,7 @@ class _LoginMahasiswaPageState extends State<LoginMahasiswaPage> {
       preferences.setString("nama", nama);
       preferences.setString("id", id);
       preferences.setString("loginSebagai", loginSebagai);
+      preferences.setString("jurusan", jurusan);
       // ignore: deprecated_member_use
       preferences.commit();
     });

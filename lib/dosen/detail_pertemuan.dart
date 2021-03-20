@@ -252,7 +252,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     infoPertemuan();
   }
 
-  Future<Uint8List> _shareQrCodeImage() async {
+  Future<Uint8List> _shareQrCodeImage(String kelas, String pertemuan) async {
     try {
       RenderRepaintBoundary boundary =
           _renderObjectKey.currentContext.findRenderObject();
@@ -260,7 +260,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
       ByteData byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       var pngBytes = byteData.buffer.asUint8List();
-      await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png');
+      await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png', text: "$kelas\n$pertemuan");
       return pngBytes;
     } catch (exception) {
       throw exception;
@@ -355,7 +355,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                             RaisedButton(
                                               color: Color(0xFF333366),
                                               onPressed: () {
-                                                _shareQrCodeImage();
+                                                _shareQrCodeImage(widget.namaKelas, infoPertemu[0]['nama_pertemuan']);
                                               },
                                               child: Text(
                                                 "Share",

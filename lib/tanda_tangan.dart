@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aplikasi_absensi/selfie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:signature/signature.dart';
@@ -74,41 +75,36 @@ class _TandaTanganState extends State<TandaTangan> {
                 //SHOW EXPORTED IMAGE IN NEW ROUTE
                 AbsorbPointer(
                   absorbing: loading,
-                                  child: IconButton(
-                    icon: (loading) ? CircularProgressIndicator(backgroundColor: Colors.white,) : Icon(Icons.check),
+                  child: IconButton(
+                    icon: (loading)
+                        ? CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          )
+                        : Icon(Icons.check),
                     color: Colors.white,
                     onPressed: () async {
                       if (_controller.isNotEmpty) {
-                        setState(() {
-                          loading = true;
-                        });
                         var data = await _controller.toPngBytes();
                         String nameFile;
 
-                        String base64Image = base64Encode(data);
+                        String base64ImageTTD = base64Encode(data);
                         if (widget.loginSebagai == 'mahasiswa') {
-                          nameFile =
-                              '${formattedDate()}${widget.namaMahasiswa.replaceAll(" ", "_")}.png';
-                          final response = await http.post(
-                              "https://aplikasiabsensistmik.000webhostapp.com/image/upload.php",
-                              body: {
-                                "image": base64Image,
-                                "name": nameFile,
-                                "idPertemuan": widget.idPertemuan,
-                                "idMahasiswa": widget.idMahasiswa
-                              });
-                          if (response.statusCode == 200) {
-                            print("Berhasil terupload");
-                          } else {
-                            print("gagal upload");
-                          }
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelfiePage(
+                                        idPertemuan: widget.idPertemuan,
+                                        idMahasiswa: widget.idMahasiswa,
+                                        namaMahasiswa: widget.namaMahasiswa,
+                                        base64ImageTTD: base64ImageTTD,
+                                      )));
                         } else {
                           nameFile =
                               '${formattedDate()}${widget.namaDosen.replaceAll(" ", "_")}.png';
                           final response = await http.post(
                               "https://aplikasiabsensistmik.000webhostapp.com/image/uploadTTDDosen.php",
                               body: {
-                                "image": base64Image,
+                                "image": base64ImageTTD,
                                 "name": nameFile,
                                 "idPertemuan": widget.idPertemuan
                               });
@@ -117,8 +113,8 @@ class _TandaTanganState extends State<TandaTangan> {
                           } else {
                             print("gagal upload");
                           }
+                          Navigator.of(context).pop();
                         }
-                        Navigator.of(context).pop();
                       } else {
                         Fluttertoast.showToast(
                             msg: "Tanda Tangan Tidak Boleh Kosong",

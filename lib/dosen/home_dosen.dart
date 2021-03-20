@@ -25,7 +25,8 @@ class _HomeDosenState extends State<HomeDosen> {
       nama = "",
       id = "",
       loginSebagai = "",
-      namaMatkulKelas = "";
+      namaMatkulKelas = "",
+      jurusan = "";
 
   void getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -34,6 +35,7 @@ class _HomeDosenState extends State<HomeDosen> {
       nama = preferences.getString("nama");
       id = preferences.getString("id");
       loginSebagai = preferences.getString("loginSebagai");
+      jurusan = preferences.getString("jurusan");
     });
   }
 
@@ -133,15 +135,18 @@ class _HomeDosenState extends State<HomeDosen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             (loginSebagai == 'dosen')
-                                ? Text("NIP      : " + username,
+                                ? Text("NIP          : " + username,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16))
-                                : Text("NRP     : " + username,
+                                : Text("NRP         : " + username,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16)),
-                            Text("Nama  : " + nama,
+                            Text("Nama      : " + nama,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16)),
+                            (loginSebagai == "mahasiswa") ? Text("Jurusan  : " + jurusan,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16)) : SizedBox(),
                             // Text("Login Sebagai  : " + loginSebagai,
                             //     style: TextStyle(color: Colors.white, fontSize: 16)),
                           ],
