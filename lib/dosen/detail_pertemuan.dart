@@ -95,7 +95,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
         absensi = jsonDecode(response.body);
         loadingAbsen = false;
       });
-      //print(absensi);
+      print(absensi);
       return absensi;
     }
   }
@@ -260,7 +260,8 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
       ByteData byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       var pngBytes = byteData.buffer.asUint8List();
-      await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png', text: "$kelas\n$pertemuan");
+      await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png',
+          text: "$kelas\n$pertemuan");
       return pngBytes;
     } catch (exception) {
       throw exception;
@@ -293,6 +294,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   sliver: SliverAppBar(
                     title: Text("Detail Pertemuan"),
                     actions: <Widget>[
+                      (widget.loginSebagai == 'dosen') ?
                       Padding(
                           padding: EdgeInsets.only(right: 20),
                           child: InkWell(
@@ -322,8 +324,10 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                               data: widget.idPertemuan,
                                               version: QrVersions.auto,
                                               size: 250,
-                                              backgroundColor: Color(0xFFFFFFFF),
-                                              foregroundColor: Color(0xFF000000),
+                                              backgroundColor:
+                                                  Color(0xFFFFFFFF),
+                                              foregroundColor:
+                                                  Color(0xFF000000),
                                               embeddedImage: AssetImage(
                                                   "LOGOSTMIKINDONESIABANJARMASIN.png"),
                                               embeddedImageStyle:
@@ -355,7 +359,10 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                             RaisedButton(
                                               color: Color(0xFF333366),
                                               onPressed: () {
-                                                _shareQrCodeImage(widget.namaKelas, infoPertemu[0]['nama_pertemuan']);
+                                                _shareQrCodeImage(
+                                                    widget.namaKelas,
+                                                    infoPertemu[0]
+                                                        ['nama_pertemuan']);
                                               },
                                               child: Text(
                                                 "Share",
@@ -372,7 +379,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                               );
                             },
                             child: Icon(Icons.qr_code),
-                          )),
+                          )) : SizedBox(),
                       (widget.loginSebagai == 'dosen')
                           ? PopupMenuButton<String>(
                               onSelected: pilihAksi,
@@ -593,9 +600,38 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                               fit: BoxFit
                                                                   .contain)),
                                                     ),
-                                                  )
+                                                  ),(widget.loginSebagai == 'dosen') ?
+                                                  Container(
+                                                      height: 40,
+                                                      width: 60,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                  "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                                                                      absensi[index]
+                                                                          [
+                                                                          'selfie']),
+                                                              fit: BoxFit
+                                                                  .contain)),
+                                                    ): SizedBox(),
                                                 ],
                                               ),
+                                              onTap: () async {
+                                                if (widget.loginSebagai ==
+                                                    'dosen') {
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        SelfieDialog(
+                                                            selfie:
+                                                                absensi[index]
+                                                                    ['selfie']),
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ),
                                         );
@@ -682,4 +718,23 @@ class GantiStatus {
   static const String tutup = 'Tutup';
 
   static const List<String> pilih = <String>[belumAktif, aktif, tutup];
+}
+
+class SelfieDialog extends StatelessWidget {
+  String selfie;
+  SelfieDialog({this.selfie});
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+          width: 300,
+          height: 450,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                      "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                          selfie),
+                  fit: BoxFit.contain))),
+    );
+  }
 }

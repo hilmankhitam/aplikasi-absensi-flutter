@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:aplikasi_absensi/camera_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class SelfiePage extends StatefulWidget {
@@ -73,13 +74,16 @@ class _SelfiePageState extends State<SelfiePage> {
               color: Colors.grey[200],
               child: (imageFile != null) ? Image.file(imageFile) : SizedBox(),
             ),
-            RaisedButton(
-              child: Text("Take Picture"),
-              onPressed: () async {
-                imageFile = await Navigator.push<File>(
-                    context, MaterialPageRoute(builder: (_) => CameraPage()));
-                setState(() {});
-              },
+            AbsorbPointer(
+              absorbing: loading,
+              child: RaisedButton(
+                child: Text("Take Picture"),
+                onPressed: () async {
+                  imageFile = await Navigator.push<File>(
+                      context, MaterialPageRoute(builder: (_) => CameraPage()));
+                  setState(() {});
+                },
+              ),
             ),
           ],
         ),
@@ -123,6 +127,15 @@ class _SelfiePageState extends State<SelfiePage> {
 
               Navigator.of(context).pop();
               Navigator.of(context).pop();
+            } else {
+              Fluttertoast.showToast(
+                  msg: "Gambar Tidak Boleh Kosong",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
             }
           },
         ),
