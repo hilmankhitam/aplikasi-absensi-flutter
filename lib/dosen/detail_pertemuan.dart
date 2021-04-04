@@ -625,7 +625,8 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                   await showDialog(
                                                     context: context,
                                                     builder: (_) =>
-                                                        SelfieDialog(
+                                                        SelfieDialog(nama: absensi[index]['nama'],
+                                                        nrp: absensi[index]['username'],
                                                             selfie:
                                                                 absensi[index]
                                                                     ['selfie']),
@@ -721,20 +722,28 @@ class GantiStatus {
 }
 
 class SelfieDialog extends StatelessWidget {
-  String selfie;
-  SelfieDialog({this.selfie});
+  String selfie, nrp, nama;
+  SelfieDialog({this.selfie,this.nrp, this.nama});
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
           width: 300,
-          height: 450,
+          height: 470,
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(
                       "https://aplikasiabsensistmik.000webhostapp.com/image/" +
                           selfie),
-                  fit: BoxFit.contain))),
+                  fit: BoxFit.contain)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(nrp),
+                      SizedBox(height: 5,),
+                      Text(nama),
+                    ],
+                  )),
     );
   }
 }
