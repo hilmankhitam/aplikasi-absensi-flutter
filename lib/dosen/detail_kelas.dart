@@ -92,7 +92,8 @@ class _DetailKelasState extends State<DetailKelas> {
                                           loginSebagai: widget.loginSebagai,
                                           idMahasiswa: widget.idMahasiswa,
                                           namaMahasiswa: widget.namaMahasiswa,
-                                          tandaTangan: pertemuanKelas[index]['tanda_tangan'],))).then((value) => getPertemuanKelas());
+                                          tandaTangan: pertemuanKelas[index]['tanda_tangan'],
+                                          pukul: pertemuanKelas[index]['jam'],))).then((value) => getPertemuanKelas());
                             },
                           ),
                         ),

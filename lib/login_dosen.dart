@@ -50,6 +50,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
     String usernameAPI = data['username'];
     String namaAPI = data['nama'];
     String id = data['id'];
+    String niknip = data['niknip'];
     String loginSebagai = data['loginsebagai'];
     if (value == 1) {
       print(data);
@@ -63,7 +64,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
           fontSize: 16.0);
       setState(() {
         _loginStatus = LoginStatus.signIn;
-        savePref(value, usernameAPI, namaAPI, id, loginSebagai);
+        savePref(value, usernameAPI, namaAPI, id, niknip,loginSebagai);
       });
     } else {
       print(data);
@@ -78,7 +79,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
     }
   }
 
-  savePref(int value, String username, String nama, String id,
+  savePref(int value, String username, String nama, String id, String niknip,
       String loginSebagai) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
@@ -86,6 +87,7 @@ class _LoginDosenPageState extends State<LoginDosenPage> {
       preferences.setString("username", username);
       preferences.setString("nama", nama);
       preferences.setString("id", id);
+      preferences.setString("niknip", niknip);
       preferences.setString("loginSebagai", loginSebagai);
       // ignore: deprecated_member_use
       preferences.commit();

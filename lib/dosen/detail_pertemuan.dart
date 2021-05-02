@@ -24,7 +24,8 @@ class DetailPertemuan extends StatefulWidget {
       loginSebagai,
       idMahasiswa,
       namaMahasiswa,
-      tandaTangan;
+      tandaTangan,
+      pukul;
   DetailPertemuan(
       {this.idKelas,
       this.namaKelas,
@@ -35,7 +36,8 @@ class DetailPertemuan extends StatefulWidget {
       this.loginSebagai,
       this.idMahasiswa,
       this.namaMahasiswa,
-      this.tandaTangan});
+      this.tandaTangan,
+      this.pukul});
 
   @override
   _DetailPertemuanState createState() => _DetailPertemuanState();
@@ -124,7 +126,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     }
   }
 
-  checkAbsen() async {
+  checkAbsen(var pukulAwal, var pukulAkhir) async {
     final response = await http.post(
         "https://aplikasiabsensistmik.000webhostapp.com/mahasiswa/checkabsensi.php",
         body: {
@@ -133,19 +135,34 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
         });
     final data = jsonDecode(response.body);
     int value = data['value'];
+    DateTime dateTime = DateTime.now();
+    String pukulSekarang =
+        dateTime.hour.toString() + dateTime.second.toString();
+    var angkaPukulSekarang = int.parse(pukulSekarang);
     if (widget.status != 'Tutup' && widget.status != 'Belum Aktif') {
-      if (value == 1) {
-        //print(data);
+      if (angkaPukulSekarang >= pukulAwal && angkaPukulSekarang <= pukulAkhir) {
+        if (value == 1) {
+          //print(data);
+          Fluttertoast.showToast(
+              msg: "Anda sudah Absen",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        } else {
+          scan();
+        }
+      }else{
         Fluttertoast.showToast(
-            msg: "Anda sudah Absen",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
-        scan();
+          msg: "Belum Jam Pertemuan",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       }
     } else {
       Fluttertoast.showToast(
@@ -278,6 +295,10 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
 
   @override
   Widget build(BuildContext context) {
+    String pukulAwal = widget.pukul.substring(0, 5).replaceAll(":", "");
+    var angkaPukulAwal = int.parse(pukulAwal);
+    String pukulAkhir = widget.pukul.substring(8, 13).replaceAll(":", "");
+    var angkaPukulAkhir = int.parse(pukulAkhir);
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _refresh,
@@ -294,92 +315,94 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   sliver: SliverAppBar(
                     title: Text("Detail Pertemuan"),
                     actions: <Widget>[
-                      (widget.loginSebagai == 'dosen') ?
-                      Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (_) => Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  elevation: 0,
-                                  backgroundColor: Colors.transparent,
-                                  child: Container(
-                                    height: 360,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.rectangle,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: RepaintBoundary(
-                                            key: _renderObjectKey,
-                                            child: QrImage(
-                                              data: widget.idPertemuan,
-                                              version: QrVersions.auto,
-                                              size: 250,
-                                              backgroundColor:
-                                                  Color(0xFFFFFFFF),
-                                              foregroundColor:
-                                                  Color(0xFF000000),
-                                              embeddedImage: AssetImage(
-                                                  "LOGOSTMIKINDONESIABANJARMASIN.png"),
-                                              embeddedImageStyle:
-                                                  QrEmbeddedImageStyle(
-                                                      size: Size(40, 40)),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
+                      (widget.loginSebagai == 'dosen')
+                          ? Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => Dialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      elevation: 0,
+                                      backgroundColor: Colors.transparent,
+                                      child: Container(
+                                        height: 360,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(12)),
+                                        child: Column(
                                           children: <Widget>[
-                                            RaisedButton(
-                                              color: Color(0xFF333366),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(
-                                                "Tutup",
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: RepaintBoundary(
+                                                key: _renderObjectKey,
+                                                child: QrImage(
+                                                  data: widget.idPertemuan,
+                                                  version: QrVersions.auto,
+                                                  size: 250,
+                                                  backgroundColor:
+                                                      Color(0xFFFFFFFF),
+                                                  foregroundColor:
+                                                      Color(0xFF000000),
+                                                  embeddedImage: AssetImage(
+                                                      "LOGOSTMIKINDONESIABANJARMASIN.png"),
+                                                  embeddedImageStyle:
+                                                      QrEmbeddedImageStyle(
+                                                          size: Size(40, 40)),
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 20,
+                                              height: 30,
                                             ),
-                                            RaisedButton(
-                                              color: Color(0xFF333366),
-                                              onPressed: () {
-                                                _shareQrCodeImage(
-                                                    widget.namaKelas,
-                                                    infoPertemu[0]
-                                                        ['nama_pertemuan']);
-                                              },
-                                              child: Text(
-                                                "Share",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                RaisedButton(
+                                                  color: Color(0xFF333366),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text(
+                                                    "Tutup",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                RaisedButton(
+                                                  color: Color(0xFF333366),
+                                                  onPressed: () {
+                                                    _shareQrCodeImage(
+                                                        widget.namaKelas,
+                                                        infoPertemu[0]
+                                                            ['nama_pertemuan']);
+                                                  },
+                                                  child: Text(
+                                                    "Share",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Icon(Icons.qr_code),
-                          )) : SizedBox(),
+                                  );
+                                },
+                                child: Icon(Icons.qr_code),
+                              ))
+                          : SizedBox(),
                       (widget.loginSebagai == 'dosen')
                           ? PopupMenuButton<String>(
                               onSelected: pilihAksi,
@@ -600,23 +623,27 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                               fit: BoxFit
                                                                   .contain)),
                                                     ),
-                                                  ),(widget.loginSebagai == 'dosen') ?
-                                                  Container(
-                                                      height: 40,
-                                                      width: 60,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  "https://aplikasiabsensistmik.000webhostapp.com/image/" +
-                                                                      absensi[index]
-                                                                          [
-                                                                          'selfie']),
-                                                              fit: BoxFit
-                                                                  .contain)),
-                                                    ): SizedBox(),
+                                                  ),
+                                                  (widget.loginSebagai ==
+                                                          'dosen')
+                                                      ? Container(
+                                                          height: 40,
+                                                          width: 60,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                              image: DecorationImage(
+                                                                  image: NetworkImage(
+                                                                      "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                                                                          absensi[index]
+                                                                              [
+                                                                              'selfie']),
+                                                                  fit: BoxFit
+                                                                      .contain)),
+                                                        )
+                                                      : SizedBox(),
                                                 ],
                                               ),
                                               onTap: () async {
@@ -625,8 +652,11 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                   await showDialog(
                                                     context: context,
                                                     builder: (_) =>
-                                                        SelfieDialog(nama: absensi[index]['nama'],
-                                                        nrp: absensi[index]['username'],
+                                                        SelfieDialog(
+                                                            nama: absensi[index]
+                                                                ['nama'],
+                                                            nrp: absensi[index]
+                                                                ['username'],
                                                             selfie:
                                                                 absensi[index]
                                                                     ['selfie']),
@@ -704,7 +734,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
               child: Icon(Icons.qr_code_scanner),
               backgroundColor: Color(0xFF333366),
               onPressed: () async {
-                checkAbsen();
+                checkAbsen(angkaPukulAwal, angkaPukulAkhir);
               },
             )
           : SizedBox(),
@@ -723,7 +753,7 @@ class GantiStatus {
 
 class SelfieDialog extends StatelessWidget {
   String selfie, nrp, nama;
-  SelfieDialog({this.selfie,this.nrp, this.nama});
+  SelfieDialog({this.selfie, this.nrp, this.nama});
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -736,14 +766,16 @@ class SelfieDialog extends StatelessWidget {
                       "https://aplikasiabsensistmik.000webhostapp.com/image/" +
                           selfie),
                   fit: BoxFit.contain)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(nrp),
-                      SizedBox(height: 5,),
-                      Text(nama),
-                    ],
-                  )),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Text(nrp),
+              SizedBox(
+                height: 5,
+              ),
+              Text(nama),
+            ],
+          )),
     );
   }
 }
