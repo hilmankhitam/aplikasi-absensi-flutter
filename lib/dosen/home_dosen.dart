@@ -190,6 +190,7 @@ class _HomeDosenState extends State<HomeDosen> {
                                                   loginSebagai: loginSebagai,
                                                   idMahasiswa: id,
                                                   namaMahasiswa: nama,
+                                                  qrCode: kelasList[index]['qr_code'],
                                                 )));
                                   },
                                   child: Container(

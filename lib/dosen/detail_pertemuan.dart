@@ -25,7 +25,8 @@ class DetailPertemuan extends StatefulWidget {
       idMahasiswa,
       namaMahasiswa,
       tandaTangan,
-      pukul;
+      pukul,
+      qrCode;
   DetailPertemuan(
       {this.idKelas,
       this.namaKelas,
@@ -37,7 +38,8 @@ class DetailPertemuan extends StatefulWidget {
       this.idMahasiswa,
       this.namaMahasiswa,
       this.tandaTangan,
-      this.pukul});
+      this.pukul,
+      this.qrCode});
 
   @override
   _DetailPertemuanState createState() => _DetailPertemuanState();
@@ -104,7 +106,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
 
   Future scan() async {
     String qrcode = await scanner.scan();
-    if (qrcode == widget.idPertemuan) {
+    if (qrcode == widget.qrCode) {
       Navigator.push(
               context,
               MaterialPageRoute(

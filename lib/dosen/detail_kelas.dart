@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class DetailKelas extends StatefulWidget {
-  String idKelas, namaDosen, namaMatkulKelas, sks, loginSebagai, idMahasiswa, namaMahasiswa;
-  DetailKelas({this.idKelas, this.namaMatkulKelas, this.sks, this.loginSebagai, this.idMahasiswa,this.namaMahasiswa});
+  String idKelas, namaDosen, namaMatkulKelas, sks, loginSebagai, idMahasiswa, namaMahasiswa, qrCode;
+  DetailKelas({this.idKelas, this.namaMatkulKelas, this.sks, this.loginSebagai, this.idMahasiswa,this.namaMahasiswa,qrCode});
 
   @override
   _DetailKelasState createState() => _DetailKelasState();
@@ -93,7 +93,8 @@ class _DetailKelasState extends State<DetailKelas> {
                                           idMahasiswa: widget.idMahasiswa,
                                           namaMahasiswa: widget.namaMahasiswa,
                                           tandaTangan: pertemuanKelas[index]['tanda_tangan'],
-                                          pukul: pertemuanKelas[index]['jam'],))).then((value) => getPertemuanKelas());
+                                          pukul: pertemuanKelas[index]['jam'],
+                                          qrCode: widget.qrCode))).then((value) => getPertemuanKelas());
                             },
                           ),
                         ),
