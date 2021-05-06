@@ -137,15 +137,18 @@ class _HomeDosenState extends State<HomeDosen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             (loginSebagai == 'dosen')
-                                ? Text("NIP          : " + niknip,
+                                ? Text("NIP/NIK : " + niknip,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16))
-                                : Text("NRP         : " + username,
+                                : Text("NRP        : " + username,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16)),
-                            Text("Nama      : " + nama,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16)),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Text("Nama     : " + nama,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                            ),
                             (loginSebagai == "mahasiswa") ? Text("Jurusan  : " + jurusan,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16)) : SizedBox(),
