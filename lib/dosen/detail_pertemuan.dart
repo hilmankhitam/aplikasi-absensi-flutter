@@ -1,17 +1,12 @@
 import 'dart:convert';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:aplikasi_absensi/tanda_tangan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 // ignore: must_be_immutable
 class DetailPertemuan extends StatefulWidget {
@@ -52,7 +47,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<RefreshIndicatorState> refreshAllKey =
       GlobalKey<RefreshIndicatorState>();
-  final GlobalKey _renderObjectKey = GlobalKey();
   List mhsTerdaftar = List();
   List absensi = List();
   List infoPertemu;
@@ -257,22 +251,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     getMhsTerdaftar();
     getAbsensi();
     infoPertemuan();
-  }
-
-  Future<Uint8List> _shareQrCodeImage(String kelas, String pertemuan) async {
-    try {
-      RenderRepaintBoundary boundary =
-          _renderObjectKey.currentContext.findRenderObject();
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      var pngBytes = byteData.buffer.asUint8List();
-      await Share.file('QR Code', 'QRCode.png', pngBytes, 'image/png',
-          text: "$kelas\n$pertemuan");
-      return pngBytes;
-    } catch (exception) {
-      throw exception;
-    }
   }
 
   @override
