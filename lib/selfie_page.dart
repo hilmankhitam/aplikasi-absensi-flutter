@@ -62,7 +62,7 @@ class _SelfiePageState extends State<SelfiePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Camera Test"),
+        title: Text("Konfirmasi Foto"),
       ),
       body: Center(
         child: Column(

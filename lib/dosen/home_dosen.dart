@@ -144,12 +144,12 @@ class _HomeDosenState extends State<HomeDosen> {
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16)),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width / 2,
+                              width: MediaQuery.of(context).size.width / 2 + 10,
                               child: Text("Nama     : " + nama,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16)),
                             ),
-                            (loginSebagai == "mahasiswa") ? Text("Jurusan  : " + jurusan,
+                            (loginSebagai == "mahasiswa") ? Text("Jurusan : " + jurusan,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16)) : SizedBox(),
                             // Text("Login Sebagai  : " + loginSebagai,

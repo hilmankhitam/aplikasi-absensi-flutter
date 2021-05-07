@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 // ignore: must_be_immutable
 class DetailKelas extends StatefulWidget {
   String idKelas, namaDosen, namaMatkulKelas, sks, loginSebagai, idMahasiswa, namaMahasiswa, qrCode;
-  DetailKelas({this.idKelas, this.namaMatkulKelas, this.sks, this.loginSebagai, this.idMahasiswa,this.namaMahasiswa,qrCode});
+  DetailKelas({this.idKelas, this.namaMatkulKelas, this.sks, this.loginSebagai, this.idMahasiswa,this.namaMahasiswa,this.qrCode});
 
   @override
   _DetailKelasState createState() => _DetailKelasState();
