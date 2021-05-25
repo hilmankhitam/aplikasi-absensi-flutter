@@ -619,8 +619,8 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                 String pukulSekarang =
                     dateTime.hour.toString() + dateTime.second.toString();
                 int angkaPukulSekarang = int.parse(pukulSekarang);
-                if (angkaPukulSekarang >= angkaPukulAwal &&
-                    angkaPukulSekarang <= angkaPukulAkhir) {
+                if ((angkaPukulSekarang >= angkaPukulAwal) &&
+                    (angkaPukulSekarang <= angkaPukulAkhir)) {
                   checkAbsen();
                 } else {
                   Fluttertoast.showToast(

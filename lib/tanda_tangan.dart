@@ -24,7 +24,7 @@ class _TandaTanganState extends State<TandaTangan> {
     penColor: Colors.black,
     exportBackgroundColor: Colors.white,
   );
-
+  bool loading = false;
   @override
   void initState() {
     super.initState();
@@ -72,53 +72,61 @@ class _TandaTanganState extends State<TandaTangan> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 //SHOW EXPORTED IMAGE IN NEW ROUTE
-                IconButton(
-                  icon: Icon(Icons.check),
-                  color: Colors.white,
-                  onPressed: () async {
-                    if (_controller.isNotEmpty) {
-                      var data = await _controller.toPngBytes();
-                      String nameFile;
+                AbsorbPointer(
+                  absorbing:
+                      (widget.loginSebagai == "dosen") ? loading : false,
+                  child: IconButton(
+                    icon: Icon(Icons.check),
+                    color: Colors.white,
+                    onPressed: () async {
+                      if (_controller.isNotEmpty) {
+                        var data = await _controller.toPngBytes();
+                        String nameFile;
 
-                      String base64ImageTTD = base64Encode(data);
-                      if (widget.loginSebagai == 'mahasiswa') {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelfiePage(
-                                      idPertemuan: widget.idPertemuan,
-                                      idMahasiswa: widget.idMahasiswa,
-                                      namaMahasiswa: widget.namaMahasiswa,
-                                      base64ImageTTD: base64ImageTTD,
-                                    )));
-                      } else {
-                        nameFile =
-                            '${formattedDate()}${widget.namaDosen.replaceAll(" ", "_")}.png';
-                        final response = await http.post(
-                            "https://aplikasiabsensistmik.000webhostapp.com/image/uploadTTDDosen.php",
-                            body: {
-                              "image": base64ImageTTD,
-                              "name": nameFile,
-                              "idPertemuan": widget.idPertemuan
-                            });
-                        if (response.statusCode == 200) {
-                          print("Berhasil terupload");
+                        String base64ImageTTD = base64Encode(data);
+                        if (widget.loginSebagai == 'mahasiswa') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelfiePage(
+                                        idPertemuan: widget.idPertemuan,
+                                        idMahasiswa: widget.idMahasiswa,
+                                        namaMahasiswa: widget.namaMahasiswa,
+                                        base64ImageTTD: base64ImageTTD,
+                                      )));
                         } else {
-                          print("gagal upload");
+                          setState(() {
+                            loading = true;
+                          });
+
+                          nameFile =
+                              '${formattedDate()}${widget.namaDosen.replaceAll(" ", "_")}.png';
+                          final response = await http.post(
+                              "https://aplikasiabsensistmik.000webhostapp.com/image/uploadTTDDosen.php",
+                              body: {
+                                "image": base64ImageTTD,
+                                "name": nameFile,
+                                "idPertemuan": widget.idPertemuan
+                              });
+                          if (response.statusCode == 200) {
+                            print("Berhasil terupload");
+                          } else {
+                            print("gagal upload");
+                          }
+                          Navigator.of(context).pop();
                         }
-                        Navigator.of(context).pop();
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Tanda Tangan Tidak Boleh Kosong",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                       }
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "Tanda Tangan Tidak Boleh Kosong",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  },
+                    },
+                  ),
                 ),
                 //CLEAR CANVAS
                 IconButton(

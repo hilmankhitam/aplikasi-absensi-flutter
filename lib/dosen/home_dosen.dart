@@ -15,6 +15,7 @@ class HomeDosen extends StatefulWidget {
 
 class _HomeDosenState extends State<HomeDosen> {
   bool isLoading = true;
+  bool ulang = true;
   signOut() {
     setStateIfMounted(() {
       widget.signOut();
@@ -48,21 +49,26 @@ class _HomeDosenState extends State<HomeDosen> {
       id = preferences.getString("id");
     });
     String url;
-    if (loginSebagai == 'dosen') {
-      url =
-          "https://aplikasiabsensistmik.000webhostapp.com/dosen/kelasdosen.php?id_dosen=$id";
-    } else if (loginSebagai == 'mahasiswa') {
-      url =
-          "https://aplikasiabsensistmik.000webhostapp.com/mahasiswa/kelasmahasiswa.php?id_mahasiswa=$id";
-    }
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      setStateIfMounted(() {
-        kelasList = jsonDecode(response.body);
-        isLoading = false;
+    while (ulang) {
+      if (loginSebagai == 'dosen') {
+        url =
+            "https://aplikasiabsensistmik.000webhostapp.com/dosen/kelasdosen.php?id_dosen=$id";
+      } else if (loginSebagai == 'mahasiswa') {
+        url =
+            "https://aplikasiabsensistmik.000webhostapp.com/mahasiswa/kelasmahasiswa.php?id_mahasiswa=$id";
+      }
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setStateIfMounted(() {
+          kelasList = jsonDecode(response.body);
+          isLoading = false;
+        });
+        print(kelasList);
+        return kelasList;
+      }
+      setState(() {
+        ulang = false;
       });
-      print(kelasList);
-      return kelasList;
     }
   }
 
@@ -149,9 +155,11 @@ class _HomeDosenState extends State<HomeDosen> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16)),
                             ),
-                            (loginSebagai == "mahasiswa") ? Text("Jurusan : " + jurusan,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16)) : SizedBox(),
+                            (loginSebagai == "mahasiswa")
+                                ? Text("Jurusan : " + jurusan,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16))
+                                : SizedBox(),
                             // Text("Login Sebagai  : " + loginSebagai,
                             //     style: TextStyle(color: Colors.white, fontSize: 16)),
                           ],
@@ -193,7 +201,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                                   loginSebagai: loginSebagai,
                                                   idMahasiswa: id,
                                                   namaMahasiswa: nama,
-                                                  qrCode: kelasList[index]['qr_code'],
+                                                  qrCode: kelasList[index]
+                                                      ['qr_code'],
                                                 )));
                                   },
                                   child: Container(
