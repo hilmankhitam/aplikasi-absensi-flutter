@@ -64,30 +64,32 @@ class _SelfiePageState extends State<SelfiePage> {
       appBar: AppBar(
         title: Text("Konfirmasi Foto"),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 10),
-              width: 300,
-              height: 450,
-              color: Colors.grey[200],
-              child: (imageFile != null) ? Image.file(imageFile) : SizedBox(),
-            ),
-            AbsorbPointer(
-              absorbing: loading,
-              child: RaisedButton(
-                child: Text("Take Picture"),
-                onPressed: () async {
-                  imageFile = await Navigator.push<File>(
-                      context, MaterialPageRoute(builder: (_) => CameraPage()));
-                  setState(() {});
-                },
+      body: ListView(children: <Widget>[
+        Center(
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 10),
+                width: 300,
+                height: 450,
+                color: Colors.grey[200],
+                child: (imageFile != null) ? Image.file(imageFile) : SizedBox(),
               ),
-            ),
-          ],
+              AbsorbPointer(
+                absorbing: loading,
+                child: RaisedButton(
+                  child: Text("Take Picture"),
+                  onPressed: () async {
+                    imageFile = await Navigator.push<File>(context,
+                        MaterialPageRoute(builder: (_) => CameraPage()));
+                    setState(() {});
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      ]),
       floatingActionButton: AbsorbPointer(
         absorbing: loading,
         child: FloatingActionButton(

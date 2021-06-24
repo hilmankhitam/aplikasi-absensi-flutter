@@ -283,7 +283,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                   sliver: SliverAppBar(
                     title: Text("Detail Pertemuan"),
                     actions: <Widget>[
-                      
                       (widget.loginSebagai == 'dosen')
                           ? PopupMenuButton<String>(
                               onSelected: pilihAksi,
@@ -362,6 +361,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12)),
+                                      
                                       SizedBox(
                                         height: 10,
                                       ),
@@ -617,7 +617,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
               onPressed: () async {
                 DateTime dateTime = DateTime.now();
                 String pukulSekarang =
-                    dateTime.hour.toString() + dateTime.second.toString();
+                    dateTime.hour.toString() + dateTime.minute.toString();
                 int angkaPukulSekarang = int.parse(pukulSekarang);
                 if ((angkaPukulSekarang >= angkaPukulAwal) &&
                     (angkaPukulSekarang <= angkaPukulAkhir)) {
