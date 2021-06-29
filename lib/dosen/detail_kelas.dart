@@ -72,7 +72,7 @@ class _DetailKelasState extends State<DetailKelas> {
                           height: 100,
                           child: ListTile(
                             leading: Text("${index + 1}"),
-                            title: Text(pertemuanKelas[index]['nama_pertemuan']),
+                            title: Text("Pertemuan ke - "+pertemuanKelas[index]['nama_pertemuan']),
                             subtitle: Text(
                                 "Ruang : ${pertemuanKelas[index]['ruangan']}\nPukul : ${pertemuanKelas[index]['jam']}\nStatus : ${pertemuanKelas[index]['status']}"),
                             enabled: true,

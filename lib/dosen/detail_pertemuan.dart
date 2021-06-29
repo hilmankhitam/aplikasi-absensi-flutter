@@ -330,7 +330,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(infoPertemu[0]['nama_pertemuan'],
+                                      Text("Pertemuan ke - "+infoPertemu[0]['nama_pertemuan'],
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12)),
