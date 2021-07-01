@@ -7,13 +7,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class SelfiePage extends StatefulWidget {
-  String namaMahasiswa, idPertemuan, idMahasiswa, namaDosen, base64ImageTTD;
+  String username, idPertemuan, idMahasiswa, idKelas,pertemuanKe, namaDosen, base64ImageTTD;
   SelfiePage(
-      {this.namaMahasiswa,
+      {this.username,
       this.idPertemuan,
       this.idMahasiswa,
       this.namaDosen,
-      this.base64ImageTTD});
+      this.base64ImageTTD,
+      this.idKelas,
+      this.pertemuanKe});
   @override
   _SelfiePageState createState() => _SelfiePageState();
 }
@@ -32,11 +34,7 @@ class _SelfiePageState extends State<SelfiePage> {
         ':' +
         dateTime.minute.toString() +
         ':' +
-        dateTime.second.toString() +
-        ':' +
-        dateTime.millisecond.toString() +
-        ':' +
-        dateTime.microsecond.toString();
+        dateTime.second.toString();
     return dateTimeString;
   }
 
@@ -108,9 +106,9 @@ class _SelfiePageState extends State<SelfiePage> {
                   base64Encode(imageFile.readAsBytesSync());
 
               String nameFileTTD =
-                  '${formattedDate()}${widget.namaMahasiswa.replaceAll(" ", "_")}.png';
+                  '${formattedDate()}${widget.username.replaceAll(" ", "_")}.png';
               String nameFileSelfie =
-                  '${formattedDateSelfie()}${widget.namaMahasiswa.replaceAll(" ", "_")}.jpg';
+                  '${formattedDateSelfie()}${widget.username.replaceAll(" ", "_")}.jpg';
               final response = await http.post(
                   "https://aplikasiabsensistmik.000webhostapp.com/image/upload.php",
                   body: {
@@ -119,7 +117,9 @@ class _SelfiePageState extends State<SelfiePage> {
                     "imageSelfie": base64ImageSelfie,
                     "namaSelfie": nameFileSelfie,
                     "idPertemuan": widget.idPertemuan,
-                    "idMahasiswa": widget.idMahasiswa
+                    "idMahasiswa": widget.idMahasiswa,
+                    "idKelas": widget.idKelas,
+                    "pertemuanKe": widget.pertemuanKe
                   });
               if (response.statusCode == 200) {
                 print("Berhasil terupload");

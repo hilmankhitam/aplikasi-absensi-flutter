@@ -4,11 +4,26 @@ import 'package:aplikasi_absensi/dosen/detail_pertemuan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class DetailKelas extends StatefulWidget {
-  String idKelas, namaDosen, namaMatkulKelas, sks, loginSebagai, idMahasiswa, namaMahasiswa, qrCode;
-  DetailKelas({this.idKelas, this.namaMatkulKelas, this.sks, this.loginSebagai, this.idMahasiswa,this.namaMahasiswa,this.qrCode});
+  String idKelas,
+      namaDosen,
+      namaMatkulKelas,
+      sks,
+      loginSebagai,
+      idMahasiswa,
+      username,
+      qrCode;
+  DetailKelas(
+      {this.idKelas,
+      this.namaMatkulKelas,
+      this.sks,
+      this.loginSebagai,
+      this.idMahasiswa,
+      this.username,
+      this.qrCode});
 
   @override
   _DetailKelasState createState() => _DetailKelasState();
@@ -17,7 +32,8 @@ class DetailKelas extends StatefulWidget {
 class _DetailKelasState extends State<DetailKelas> {
   List pertemuanKelas = List();
   bool isLoading = true;
-  final GlobalKey<RefreshIndicatorState> refresh = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> refresh =
+      GlobalKey<RefreshIndicatorState>();
 
   Future<void> getPertemuanKelas() async {
     String url =
@@ -32,7 +48,6 @@ class _DetailKelasState extends State<DetailKelas> {
       return pertemuanKelas;
     }
   }
-
 
   void setStateIfMounted(f) {
     if (mounted) setState(f);
@@ -49,16 +64,37 @@ class _DetailKelasState extends State<DetailKelas> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.namaMatkulKelas),
+        actions: [
+          (widget.loginSebagai == "dosen") ?
+          Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: InkWell(
+                onTap: () async {
+                  String url =
+                      "https://aplikasiabsensistmik.000webhostapp.com/dosen/laporan.php?id_kelas=${widget.idKelas}";
+                 if(await canLaunch(url)){
+                   await launch(url);
+                 }else{
+                   throw 'Could not launch $url';
+                 }
+                },
+                child: Icon(Icons.save),
+              )) : SizedBox(),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: getPertemuanKelas,
         key: refresh,
-              child: (isLoading)
-            ? Center(child: SpinKitFadingCircle(color: Color(0xFF333366),) )
+        child: (isLoading)
+            ? Center(
+                child: SpinKitFadingCircle(
+                color: Color(0xFF333366),
+              ))
             : pertemuanKelas.isEmpty
                 ? Center(child: Text("Belum ada Pertemuan"))
                 : ListView.builder(
-                    itemCount: pertemuanKelas == null ? 0 : pertemuanKelas.length,
+                    itemCount:
+                        pertemuanKelas == null ? 0 : pertemuanKelas.length,
                     itemBuilder: (context, index) {
                       return Card(
                         child: Container(
@@ -72,7 +108,8 @@ class _DetailKelasState extends State<DetailKelas> {
                           height: 100,
                           child: ListTile(
                             leading: Text("${index + 1}"),
-                            title: Text("Pertemuan ke - "+pertemuanKelas[index]['nama_pertemuan']),
+                            title: Text("Pertemuan ke - " +
+                                pertemuanKelas[index]['nama_pertemuan']),
                             subtitle: Text(
                                 "Ruang : ${pertemuanKelas[index]['ruangan']}\nPukul : ${pertemuanKelas[index]['jam']}\nStatus : ${pertemuanKelas[index]['status']}"),
                             enabled: true,
@@ -84,17 +121,21 @@ class _DetailKelasState extends State<DetailKelas> {
                                       builder: (context) => DetailPertemuan(
                                           idKelas: widget.idKelas,
                                           namaKelas: widget.namaMatkulKelas,
-                                          namaDosen: pertemuanKelas[index]['nama'],
+                                          namaDosen: pertemuanKelas[index]
+                                              ['nama'],
                                           idPertemuan: pertemuanKelas[index]
                                               ['id'],
-                                          status: pertemuanKelas[index]['status'],
+                                          status: pertemuanKelas[index]
+                                              ['status'],
                                           sks: widget.sks,
                                           loginSebagai: widget.loginSebagai,
                                           idMahasiswa: widget.idMahasiswa,
-                                          namaMahasiswa: widget.namaMahasiswa,
-                                          tandaTangan: pertemuanKelas[index]['tanda_tangan'],
+                                          username: widget.username,
+                                          tandaTangan: pertemuanKelas[index]
+                                              ['tanda_tangan'],
                                           pukul: pertemuanKelas[index]['jam'],
-                                          qrCode: widget.qrCode))).then((value) => getPertemuanKelas());
+                                          qrCode: widget.qrCode))).then(
+                                  (value) => getPertemuanKelas());
                             },
                           ),
                         ),

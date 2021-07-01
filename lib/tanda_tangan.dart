@@ -7,13 +7,15 @@ import 'package:signature/signature.dart';
 import 'package:http/http.dart' as http;
 
 class TandaTangan extends StatefulWidget {
-  String namaMahasiswa, idPertemuan, idMahasiswa, loginSebagai, namaDosen;
+  String username, idPertemuan, idMahasiswa,idKelas,pertemuanKe, loginSebagai, namaDosen;
   TandaTangan(
-      {this.namaMahasiswa,
+      {this.username,
       this.idPertemuan,
       this.idMahasiswa,
       this.loginSebagai,
-      this.namaDosen});
+      this.namaDosen,
+      this.idKelas,
+      this.pertemuanKe});
   @override
   _TandaTanganState createState() => _TandaTanganState();
 }
@@ -91,8 +93,10 @@ class _TandaTanganState extends State<TandaTangan> {
                                   builder: (context) => SelfiePage(
                                         idPertemuan: widget.idPertemuan,
                                         idMahasiswa: widget.idMahasiswa,
-                                        namaMahasiswa: widget.namaMahasiswa,
+                                        idKelas: widget.idKelas,
+                                        username: widget.username,
                                         base64ImageTTD: base64ImageTTD,
+                                        pertemuanKe: widget.pertemuanKe,
                                       )));
                         } else {
                           setState(() {

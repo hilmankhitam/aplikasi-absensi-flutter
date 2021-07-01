@@ -200,7 +200,7 @@ class _HomeDosenState extends State<HomeDosen> {
                                                   sks: kelasList[index]['sks'],
                                                   loginSebagai: loginSebagai,
                                                   idMahasiswa: id,
-                                                  namaMahasiswa: nama,
+                                                  username: username,
                                                   qrCode: kelasList[index]
                                                       ['qr_code'],
                                                 )));

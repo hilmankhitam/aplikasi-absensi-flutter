@@ -18,7 +18,7 @@ class DetailPertemuan extends StatefulWidget {
       sks,
       loginSebagai,
       idMahasiswa,
-      namaMahasiswa,
+      username,
       tandaTangan,
       pukul,
       qrCode;
@@ -31,7 +31,7 @@ class DetailPertemuan extends StatefulWidget {
       this.sks,
       this.loginSebagai,
       this.idMahasiswa,
-      this.namaMahasiswa,
+      this.username,
       this.tandaTangan,
       this.pukul,
       this.qrCode});
@@ -98,7 +98,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     }
   }
 
-  Future scan() async {
+  Future scan(String pertemuanKe) async {
     print(widget.qrCode);
     String qrcode = await scanner.scan();
     if (qrcode == widget.qrCode) {
@@ -106,10 +106,12 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
               context,
               MaterialPageRoute(
                   builder: (context) => TandaTangan(
-                      namaMahasiswa: widget.namaMahasiswa,
+                      username: widget.username,
                       idPertemuan: widget.idPertemuan,
                       idMahasiswa: widget.idMahasiswa,
-                      loginSebagai: widget.loginSebagai)))
+                      idKelas: widget.idKelas,
+                      loginSebagai: widget.loginSebagai,
+                      pertemuanKe: pertemuanKe)))
           .then((value) => _refresh());
     } else if (qrcode == null) {
     } else {
@@ -124,7 +126,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     }
   }
 
-  checkAbsen() async {
+  checkAbsen(String pertemuanKe) async {
     final response = await http.post(
         "https://aplikasiabsensistmik.000webhostapp.com/mahasiswa/checkabsensi.php",
         body: {
@@ -146,7 +148,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
             textColor: Colors.white,
             fontSize: 16.0);
       } else {
-        scan();
+        scan(pertemuanKe);
       }
     } else {
       Fluttertoast.showToast(
@@ -621,7 +623,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                 int angkaPukulSekarang = int.parse(pukulSekarang);
                 if ((angkaPukulSekarang >= angkaPukulAwal) &&
                     (angkaPukulSekarang <= angkaPukulAkhir)) {
-                  checkAbsen();
+                  checkAbsen(infoPertemu[0]['nama_pertemuan']);
                 } else {
                   Fluttertoast.showToast(
                       msg: "Belum Jam Pertemuan",
