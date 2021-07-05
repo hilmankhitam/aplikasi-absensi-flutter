@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:aplikasi_absensi/dosen/detail_pertemuan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // ignore: must_be_immutable
 class DetailKelas extends StatefulWidget {
@@ -65,21 +67,28 @@ class _DetailKelasState extends State<DetailKelas> {
       appBar: AppBar(
         title: Text(widget.namaMatkulKelas),
         actions: [
-          (widget.loginSebagai == "dosen") ?
-          Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: InkWell(
-                onTap: () async {
-                  String url =
-                      "https://aplikasiabsensistmik.000webhostapp.com/dosen/laporan.php?id_kelas=${widget.idKelas}";
-                 if(await canLaunch(url)){
-                   await launch(url);
-                 }else{
-                   throw 'Could not launch $url';
-                 }
-                },
-                child: Icon(Icons.save),
-              )) : SizedBox(),
+          (widget.loginSebagai == "dosen")
+              ? Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: InkWell(
+                    onTap: () async {
+                      final status = await Permission.storage.request();
+                      String url =
+                          "https://aplikasiabsensistmik.000webhostapp.com/dosen/laporan.php?id_kelas=${widget.idKelas}";
+                      if (status.isGranted) {
+                        final externalDir = await getExternalStorageDirectory();
+                        final id = await FlutterDownloader.enqueue(
+                            url: url,
+                            savedDir: externalDir.path,
+                            showNotification: true,
+                            openFileFromNotification: true);
+                      } else {
+                        print("Permission Denied");
+                      }
+                    },
+                    child: Icon(Icons.save),
+                  ))
+              : SizedBox(),
         ],
       ),
       body: RefreshIndicator(
