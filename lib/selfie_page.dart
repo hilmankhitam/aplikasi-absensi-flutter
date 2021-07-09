@@ -119,7 +119,7 @@ class _SelfiePageState extends State<SelfiePage> {
                     "idPertemuan": widget.idPertemuan,
                     "idMahasiswa": widget.idMahasiswa,
                     "idKelas": widget.idKelas,
-                    "pertemuanKe": widget.pertemuanKe
+                    "pertemuanKe": widget.pertemuanKe.trim()
                   });
               if (response.statusCode == 200) {
                 print("Berhasil terupload");
