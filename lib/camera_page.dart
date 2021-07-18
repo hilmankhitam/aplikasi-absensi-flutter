@@ -14,7 +14,7 @@ class _CameraPageState extends State<CameraPage> {
 
   Future<void> initializeCamera() async {
     var cameras = await availableCameras();
-    controller = CameraController(cameras[1], ResolutionPreset.low);
+    controller = CameraController(cameras[1], ResolutionPreset.medium);
     await controller.initialize();
   }
 

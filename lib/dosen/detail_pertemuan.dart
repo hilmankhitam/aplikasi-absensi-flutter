@@ -21,7 +21,8 @@ class DetailPertemuan extends StatefulWidget {
       username,
       tandaTangan,
       pukul,
-      qrCode;
+      qrCode,
+      fotoProfil;
   DetailPertemuan(
       {this.idKelas,
       this.namaKelas,
@@ -34,7 +35,8 @@ class DetailPertemuan extends StatefulWidget {
       this.username,
       this.tandaTangan,
       this.pukul,
-      this.qrCode});
+      this.qrCode,
+      this.fotoProfil});
 
   @override
   _DetailPertemuanState createState() => _DetailPertemuanState();
@@ -57,44 +59,56 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
 
   String tandaTangan;
   infoPertemuan() async {
-    String url =
-        "https://aplikasiabsensistmik.000webhostapp.com/dosen/informasipertemuan.php?id_pertemuan=${widget.idPertemuan}";
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      setStateIfMounted(() {
-        infoPertemu = jsonDecode(response.body);
-        loadingInfoPertemuan = false;
-      });
-      print(infoPertemu);
-      return infoPertemu;
+    try {
+      String url =
+          "https://aplikasiabsensistmik.000webhostapp.com/dosen/informasipertemuan.php?id_pertemuan=${widget.idPertemuan}";
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setStateIfMounted(() {
+          infoPertemu = jsonDecode(response.body);
+          loadingInfoPertemuan = false;
+        });
+        //print(infoPertemu);
+        return infoPertemu;
+      }
+    } catch (e) {
+      return null;
     }
   }
 
   getMhsTerdaftar() async {
-    String url =
-        "https://aplikasiabsensistmik.000webhostapp.com/dosen/mhsterdaftar.php?id_kelas=${widget.idKelas}";
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      setStateIfMounted(() {
-        mhsTerdaftar = jsonDecode(response.body);
-        loadingMhsTerdaftar = false;
-      });
-      //print(mhsTerdaftar);
-      return mhsTerdaftar;
+    try {
+      String url =
+          "https://aplikasiabsensistmik.000webhostapp.com/dosen/mhsterdaftar.php?id_kelas=${widget.idKelas}";
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setStateIfMounted(() {
+          mhsTerdaftar = jsonDecode(response.body);
+          loadingMhsTerdaftar = false;
+        });
+        //print(mhsTerdaftar);
+        return mhsTerdaftar;
+      }
+    } catch (e) {
+      return null;
     }
   }
 
   getAbsensi() async {
-    String url =
-        "https://aplikasiabsensistmik.000webhostapp.com/dosen/getabsensi.php?id_pertemuan=${widget.idPertemuan}";
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      setStateIfMounted(() {
-        absensi = jsonDecode(response.body);
-        loadingAbsen = false;
-      });
-      print(absensi);
-      return absensi;
+    try {
+      String url =
+          "https://aplikasiabsensistmik.000webhostapp.com/dosen/getabsensi.php?id_pertemuan=${widget.idPertemuan}";
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setStateIfMounted(() {
+          absensi = jsonDecode(response.body);
+          loadingAbsen = false;
+        });
+        //print(absensi);
+        return absensi;
+      }
+    } catch (e) {
+      return null;
     }
   }
 
@@ -103,16 +117,15 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
     String qrcode = await scanner.scan();
     if (qrcode == widget.qrCode) {
       Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TandaTangan(
-                      username: widget.username,
-                      idPertemuan: widget.idPertemuan,
-                      idMahasiswa: widget.idMahasiswa,
-                      idKelas: widget.idKelas,
-                      loginSebagai: widget.loginSebagai,
-                      pertemuanKe: pertemuanKe)))
-          .then((value) => _refresh());
+          context,
+          MaterialPageRoute(
+              builder: (context) => TandaTangan(
+                  username: widget.username,
+                  idPertemuan: widget.idPertemuan,
+                  idMahasiswa: widget.idMahasiswa,
+                  idKelas: widget.idKelas,
+                  loginSebagai: widget.loginSebagai,
+                  pertemuanKe: pertemuanKe))).then((value) => _refresh());
     } else if (qrcode == null) {
     } else {
       Fluttertoast.showToast(
@@ -332,7 +345,9 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text("Pertemuan ke - "+infoPertemu[0]['nama_pertemuan'],
+                                      Text(
+                                          "Pertemuan ke - " +
+                                              infoPertemu[0]['nama_pertemuan'],
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12)),
@@ -363,7 +378,6 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12)),
-                                      
                                       SizedBox(
                                         height: 10,
                                       ),
@@ -480,7 +494,7 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                     "Nama : " +
                                                         absensi[index]['nama'],
                                                     style:
-                                                        TextStyle(fontSize: 13),
+                                                        TextStyle(fontSize: 10),
                                                   ),
                                                   Container(
                                                     height: 40,
@@ -527,6 +541,26 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                                       .contain)),
                                                         )
                                                       : SizedBox(),
+                                                  (widget.loginSebagai ==
+                                                          'dosen')
+                                                      ? Container(
+                                                          height: 40,
+                                                          width: 60,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                              image: DecorationImage(
+                                                                  image: NetworkImage(
+                                                                      "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                                                                          absensi[index]
+                                                                              [
+                                                                              'fotoprofil']),
+                                                                  fit: BoxFit
+                                                                      .contain)),
+                                                        )
+                                                      : SizedBox(),
                                                 ],
                                               ),
                                               onTap: () async {
@@ -536,13 +570,15 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
                                                     context: context,
                                                     builder: (_) =>
                                                         SelfieDialog(
-                                                            nama: absensi[index]
-                                                                ['nama'],
-                                                            nrp: absensi[index]
-                                                                ['username'],
-                                                            selfie:
-                                                                absensi[index]
-                                                                    ['selfie']),
+                                                      nama: absensi[index]
+                                                          ['nama'],
+                                                      nrp: absensi[index]
+                                                          ['username'],
+                                                      selfie: absensi[index]
+                                                          ['selfie'],
+                                                      fotoProfil: absensi[index]
+                                                          ['fotoprofil'],
+                                                    ),
                                                   );
                                                 }
                                               },
@@ -617,16 +653,28 @@ class _DetailPertemuanState extends State<DetailPertemuan> {
               child: Icon(Icons.qr_code_scanner),
               backgroundColor: Color(0xFF333366),
               onPressed: () async {
+                print(widget.fotoProfil);
                 DateTime dateTime = DateTime.now();
                 String pukulSekarang =
                     dateTime.hour.toString() + dateTime.minute.toString();
                 int angkaPukulSekarang = int.parse(pukulSekarang);
-                if ((angkaPukulSekarang >= angkaPukulAwal) &&
-                    (angkaPukulSekarang <= angkaPukulAkhir)) {
-                  checkAbsen(infoPertemu[0]['nama_pertemuan']);
+                if (widget.fotoProfil != "") {
+                  if ((angkaPukulSekarang >= angkaPukulAwal) &&
+                      (angkaPukulSekarang <= angkaPukulAkhir)) {
+                    checkAbsen(infoPertemu[0]['nama_pertemuan']);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Belum Jam Pertemuan",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
                 } else {
                   Fluttertoast.showToast(
-                      msg: "Belum Jam Pertemuan",
+                      msg: "tambahkan foto profil terlebih dahulu",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 1,
@@ -651,30 +699,55 @@ class GantiStatus {
 }
 
 class SelfieDialog extends StatelessWidget {
-  String selfie, nrp, nama;
-  SelfieDialog({this.selfie, this.nrp, this.nama});
+  String selfie, nrp, nama, fotoProfil;
+  SelfieDialog({this.selfie, this.nrp, this.nama, this.fotoProfil});
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
-          width: 300,
-          height: 470,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(
-                      "https://aplikasiabsensistmik.000webhostapp.com/image/" +
-                          selfie),
-                  fit: BoxFit.contain)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Text(nrp),
-              SizedBox(
-                height: 5,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            Container(
+                width: 300,
+                height: 470,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                                selfie),
+                        fit: BoxFit.contain)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(nrp),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(nama),
+                  ],
+                )),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              width: 300,
+              height: 470,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "https://aplikasiabsensistmik.000webhostapp.com/image/" +
+                              fotoProfil),
+                      fit: BoxFit.contain)),
+              child: Column(
+                children: [
+                  Text('Foto Profil'),
+                ],
               ),
-              Text(nama),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

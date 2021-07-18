@@ -5,9 +5,17 @@ import 'package:aplikasi_absensi/camera_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelfiePage extends StatefulWidget {
-  String username, idPertemuan, idMahasiswa, idKelas,pertemuanKe, namaDosen, base64ImageTTD;
+  String username,
+      idPertemuan,
+      idMahasiswa,
+      idKelas,
+      pertemuanKe,
+      namaDosen,
+      base64ImageTTD,
+      fotoProfil;
   SelfiePage(
       {this.username,
       this.idPertemuan,
@@ -15,7 +23,8 @@ class SelfiePage extends StatefulWidget {
       this.namaDosen,
       this.base64ImageTTD,
       this.idKelas,
-      this.pertemuanKe});
+      this.pertemuanKe,
+      this.fotoProfil});
   @override
   _SelfiePageState createState() => _SelfiePageState();
 }
@@ -98,37 +107,63 @@ class _SelfiePageState extends State<SelfiePage> {
                 )
               : Icon(Icons.check),
           onPressed: () async {
+            String nameFileSelfie = "";
             if (imageFile != null) {
-              setState(() {
-                loading = true;
-              });
-              String base64ImageSelfie =
-                  base64Encode(imageFile.readAsBytesSync());
+              if (widget.fotoProfil != "") {
+                setState(() {
+                  loading = true;
+                });
+                String base64ImageSelfie =
+                    base64Encode(imageFile.readAsBytesSync());
 
-              String nameFileTTD =
-                  '${formattedDate()}${widget.username.replaceAll(" ", "_")}.png';
-              String nameFileSelfie =
-                  '${formattedDateSelfie()}${widget.username.replaceAll(" ", "_")}.jpg';
-              final response = await http.post(
-                  "https://aplikasiabsensistmik.000webhostapp.com/image/upload.php",
-                  body: {
-                    "imageTTD": widget.base64ImageTTD,
-                    "namaTTD": nameFileTTD,
-                    "imageSelfie": base64ImageSelfie,
-                    "namaSelfie": nameFileSelfie,
-                    "idPertemuan": widget.idPertemuan,
-                    "idMahasiswa": widget.idMahasiswa,
-                    "idKelas": widget.idKelas,
-                    "pertemuanKe": widget.pertemuanKe.trim()
-                  });
-              if (response.statusCode == 200) {
-                print("Berhasil terupload");
+                String nameFileTTD =
+                    '${formattedDate()}${widget.username.replaceAll(" ", "_")}.png';
+                nameFileSelfie =
+                    '${formattedDateSelfie()}${widget.username.replaceAll(" ", "_")}.jpg';
+                final response = await http.post(
+                    "https://aplikasiabsensistmik.000webhostapp.com/image/upload.php",
+                    body: {
+                      "imageTTD": widget.base64ImageTTD,
+                      "namaTTD": nameFileTTD,
+                      "imageSelfie": base64ImageSelfie,
+                      "namaSelfie": nameFileSelfie,
+                      "idPertemuan": widget.idPertemuan,
+                      "idMahasiswa": widget.idMahasiswa,
+                      "idKelas": widget.idKelas,
+                      "pertemuanKe": widget.pertemuanKe.trim()
+                    });
+                if (response.statusCode == 200) {
+                  print("Berhasil terupload");
+                } else {
+                  print("gagal upload");
+                }
+
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
               } else {
-                print("gagal upload");
-              }
+                setState(() {
+                  loading = true;
+                });
+                String base64ImageSelfie =
+                    base64Encode(imageFile.readAsBytesSync());
+                String nameFileSelfie =
+                    '${formattedDateSelfie()}${widget.username.replaceAll(" ", "_")}.jpg';
+                final response = await http.post(
+                    "https://aplikasiabsensistmik.000webhostapp.com/image/uploadFotoProfil.php",
+                    body: {
+                      "imageSelfie": base64ImageSelfie,
+                      "namaSelfie": nameFileSelfie,
+                      "idMahasiswa": widget.idMahasiswa,
+                    });
+                if (response.statusCode == 200) {
+                  print("Berhasil terupload");
+                } else {
+                  print("gagal upload");
+                }
 
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                setState(() {});
+              }
             } else {
               Fluttertoast.showToast(
                   msg: "Gambar Tidak Boleh Kosong",

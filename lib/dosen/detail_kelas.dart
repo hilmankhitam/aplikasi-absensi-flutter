@@ -17,7 +17,8 @@ class DetailKelas extends StatefulWidget {
       loginSebagai,
       idMahasiswa,
       username,
-      qrCode;
+      qrCode,
+      fotoProfil;
   DetailKelas(
       {this.idKelas,
       this.namaMatkulKelas,
@@ -25,7 +26,8 @@ class DetailKelas extends StatefulWidget {
       this.loginSebagai,
       this.idMahasiswa,
       this.username,
-      this.qrCode});
+      this.qrCode,
+      this.fotoProfil});
 
   @override
   _DetailKelasState createState() => _DetailKelasState();
@@ -46,7 +48,7 @@ class _DetailKelasState extends State<DetailKelas> {
         pertemuanKelas = jsonDecode(response.body);
         isLoading = false;
       });
-      print(pertemuanKelas);
+      //print(pertemuanKelas);
       return pertemuanKelas;
     }
   }
@@ -143,7 +145,8 @@ class _DetailKelasState extends State<DetailKelas> {
                                           tandaTangan: pertemuanKelas[index]
                                               ['tanda_tangan'],
                                           pukul: pertemuanKelas[index]['jam'],
-                                          qrCode: widget.qrCode))).then(
+                                          qrCode: widget.qrCode,
+                                          fotoProfil: widget.fotoProfil))).then(
                                   (value) => getPertemuanKelas());
                             },
                           ),
